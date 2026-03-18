@@ -4,31 +4,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dot.Net.WebApi.Repositories
 {
-    public class UserRepository : IRepository<User>
+    public class BidListRepository : IRepository<BidList>
     {
         private readonly LocalDbContext _dbContext;
 
-        public UserRepository(LocalDbContext dbContext)
+        public BidListRepository(LocalDbContext dbContext)
         {
             _dbContext = dbContext;
         }
         // Lier à l'interface
-        public async Task<List<User>> FindAll()
+        public async Task<List<BidList>> FindAll()
         {
-            return await _dbContext.Users.ToListAsync();
+            return await _dbContext.BidLists.ToListAsync();
         }
 
-        public async Task<User?> FindById(int id)
+        public async Task<BidList?> FindById(int id)
         {
-            return await _dbContext.Users.FindAsync(id);
+            return await _dbContext.BidLists.FindAsync(id);
         }
-        public async Task<User> Add(User entity)
+        public async Task<BidList> Add(BidList entity)
         {
-            _dbContext.Users.Add(entity);
+            _dbContext.BidLists.Add(entity);
             await _dbContext.SaveChangesAsync();
             return entity;
         }
-        public async Task<User?> Update(int id, User entity)
+        public async Task<BidList?> Update(int id, BidList entity)
         {
             var existing = await FindById(id);
             if (existing == null) return null;
@@ -43,7 +43,7 @@ namespace Dot.Net.WebApi.Repositories
             var existing = await FindById(id);
             if (existing == null) return false;
 
-            _dbContext.Users.Remove(existing);
+            _dbContext.BidLists.Remove(existing);
             await _dbContext.SaveChangesAsync();
             return true;
         }

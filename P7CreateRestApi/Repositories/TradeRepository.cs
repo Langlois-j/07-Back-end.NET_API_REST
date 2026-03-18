@@ -4,31 +4,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dot.Net.WebApi.Repositories
 {
-    public class UserRepository : IRepository<User>
+    public class TradeRepository : IRepository<Trade>
     {
         private readonly LocalDbContext _dbContext;
 
-        public UserRepository(LocalDbContext dbContext)
+        public TradeRepository(LocalDbContext dbContext)
         {
             _dbContext = dbContext;
         }
         // Lier à l'interface
-        public async Task<List<User>> FindAll()
+        public async Task<List<Trade>> FindAll()
         {
-            return await _dbContext.Users.ToListAsync();
+            return await _dbContext.Trades.ToListAsync();
         }
 
-        public async Task<User?> FindById(int id)
+        public async Task<Trade?> FindById(int id)
         {
-            return await _dbContext.Users.FindAsync(id);
+            return await _dbContext.Trades.FindAsync(id);
         }
-        public async Task<User> Add(User entity)
+        public async Task<Trade> Add(Trade entity)
         {
-            _dbContext.Users.Add(entity);
+            _dbContext.Trades.Add(entity);
             await _dbContext.SaveChangesAsync();
             return entity;
         }
-        public async Task<User?> Update(int id, User entity)
+        public async Task<Trade?> Update(int id, Trade entity)
         {
             var existing = await FindById(id);
             if (existing == null) return null;
@@ -43,7 +43,7 @@ namespace Dot.Net.WebApi.Repositories
             var existing = await FindById(id);
             if (existing == null) return false;
 
-            _dbContext.Users.Remove(existing);
+            _dbContext.Trades.Remove(existing);
             await _dbContext.SaveChangesAsync();
             return true;
         }

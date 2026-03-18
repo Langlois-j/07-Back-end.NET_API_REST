@@ -4,31 +4,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dot.Net.WebApi.Repositories
 {
-    public class UserRepository : IRepository<User>
+    public class CurvePointRepository : IRepository<CurvePoint>
     {
         private readonly LocalDbContext _dbContext;
 
-        public UserRepository(LocalDbContext dbContext)
+        public CurvePointRepository(LocalDbContext dbContext)
         {
             _dbContext = dbContext;
         }
         // Lier à l'interface
-        public async Task<List<User>> FindAll()
+        public async Task<List<CurvePoint>> FindAll()
         {
-            return await _dbContext.Users.ToListAsync();
+            return await _dbContext.CurvePoints.ToListAsync();
         }
 
-        public async Task<User?> FindById(int id)
+        public async Task<CurvePoint?> FindById(int id)
         {
-            return await _dbContext.Users.FindAsync(id);
+            return await _dbContext.CurvePoints.FindAsync(id);
         }
-        public async Task<User> Add(User entity)
+        public async Task<CurvePoint> Add(CurvePoint entity)
         {
-            _dbContext.Users.Add(entity);
+            _dbContext.CurvePoints.Add(entity);
             await _dbContext.SaveChangesAsync();
             return entity;
         }
-        public async Task<User?> Update(int id, User entity)
+        public async Task<CurvePoint?> Update(int id, CurvePoint entity)
         {
             var existing = await FindById(id);
             if (existing == null) return null;
@@ -42,8 +42,7 @@ namespace Dot.Net.WebApi.Repositories
         {
             var existing = await FindById(id);
             if (existing == null) return false;
-
-            _dbContext.Users.Remove(existing);
+            _dbContext.CurvePoints.Remove(existing);
             await _dbContext.SaveChangesAsync();
             return true;
         }

@@ -1,34 +1,34 @@
-using Dot.Net.WebApi.Data;
 using Dot.Net.WebApi.Domain;
+using Dot.Net.WebApi.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dot.Net.WebApi.Repositories
 {
-    public class UserRepository : IRepository<User>
+    public class RatingRepository : IRepository<Rating>
     {
         private readonly LocalDbContext _dbContext;
 
-        public UserRepository(LocalDbContext dbContext)
+        public RatingRepository(LocalDbContext dbContext)
         {
             _dbContext = dbContext;
         }
         // Lier à l'interface
-        public async Task<List<User>> FindAll()
+        public async Task<List<Rating>> FindAll()
         {
-            return await _dbContext.Users.ToListAsync();
+            return await _dbContext.Ratings.ToListAsync();
         }
 
-        public async Task<User?> FindById(int id)
+        public async Task<Rating?> FindById(int id)
         {
-            return await _dbContext.Users.FindAsync(id);
+            return await _dbContext.Ratings.FindAsync(id);
         }
-        public async Task<User> Add(User entity)
+        public async Task<Rating> Add(Rating entity)
         {
-            _dbContext.Users.Add(entity);
+            _dbContext.Ratings.Add(entity);
             await _dbContext.SaveChangesAsync();
             return entity;
         }
-        public async Task<User?> Update(int id, User entity)
+        public async Task<Rating?> Update(int id, Rating entity)
         {
             var existing = await FindById(id);
             if (existing == null) return null;
@@ -43,7 +43,7 @@ namespace Dot.Net.WebApi.Repositories
             var existing = await FindById(id);
             if (existing == null) return false;
 
-            _dbContext.Users.Remove(existing);
+            _dbContext.Ratings.Remove(existing);
             await _dbContext.SaveChangesAsync();
             return true;
         }

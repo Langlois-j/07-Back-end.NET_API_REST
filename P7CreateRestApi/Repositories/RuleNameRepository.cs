@@ -4,31 +4,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dot.Net.WebApi.Repositories
 {
-    public class UserRepository : IRepository<User>
+    public class RuleNameRepository : IRepository<RuleName>
     {
         private readonly LocalDbContext _dbContext;
 
-        public UserRepository(LocalDbContext dbContext)
+        public RuleNameRepository(LocalDbContext dbContext)
         {
             _dbContext = dbContext;
         }
         // Lier à l'interface
-        public async Task<List<User>> FindAll()
+        public async Task<List<RuleName>> FindAll()
         {
-            return await _dbContext.Users.ToListAsync();
+            return await _dbContext.RuleNames.ToListAsync();
         }
 
-        public async Task<User?> FindById(int id)
+        public async Task<RuleName?> FindById(int id)
         {
-            return await _dbContext.Users.FindAsync(id);
+            return await _dbContext.RuleNames.FindAsync(id);
         }
-        public async Task<User> Add(User entity)
+        public async Task<RuleName> Add(RuleName entity)
         {
-            _dbContext.Users.Add(entity);
+            _dbContext.RuleNames.Add(entity);
             await _dbContext.SaveChangesAsync();
             return entity;
         }
-        public async Task<User?> Update(int id, User entity)
+        public async Task<RuleName?> Update(int id, RuleName entity)
         {
             var existing = await FindById(id);
             if (existing == null) return null;
@@ -43,7 +43,7 @@ namespace Dot.Net.WebApi.Repositories
             var existing = await FindById(id);
             if (existing == null) return false;
 
-            _dbContext.Users.Remove(existing);
+            _dbContext.RuleNames.Remove(existing);
             await _dbContext.SaveChangesAsync();
             return true;
         }

@@ -8,7 +8,7 @@ namespace Dot.Net.WebApi.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private UserRepository _userRepository;
+        private readonly UserRepository _userRepository;
 
         public UserController(UserRepository userRepository)
         {
@@ -31,23 +31,23 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpGet]
         [Route("validate")]
-        public IActionResult Validate([FromBody]User user)
+        public async Task<IActionResult> Validate([FromBody]User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-           
-           _userRepository.Add(user);
+
+            await _userRepository.Add(user);
 
             return Ok();
         }
 
         [HttpGet]
         [Route("update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
+        public async Task<IActionResult> ShowUpdateFormAsync(int id)
         {
-            User user = _userRepository.FindById(id);
+             User? user = await _userRepository.FindById(id);
             
             if (user == null)
                 throw new ArgumentException("Invalid user Id:" + id);
@@ -57,7 +57,7 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpPost]
         [Route("update/{id}")]
-        public IActionResult UpdateUser(int id, [FromBody] User user)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] User user)
         {
             // TODO: check required fields, if valid call service to update Trade and return Trade list
             return Ok();
@@ -65,9 +65,9 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            User user = _userRepository.FindById(id);
+            User? user = await _userRepository.FindById(id);
             
             if (user == null)
                 throw new ArgumentException("Invalid user Id:" + id);

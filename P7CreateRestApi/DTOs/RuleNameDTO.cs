@@ -1,10 +1,7 @@
-using System.ComponentModel.DataAnnotations;
-
-namespace Dot.Net.WebApi.Domain
+﻿namespace Dot.Net.WebApi.DTOs
 {
-    public class RuleName
+    public class RoleNameDTO
     {
-        [Key]
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
@@ -12,6 +9,5 @@ namespace Dot.Net.WebApi.Domain
         public string? Template { get; set; }
         public string? SqlStr { get; set; }
         public string? SqlPart { get; set; }
-
     }
 }

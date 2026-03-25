@@ -1,15 +1,11 @@
-using System.ComponentModel.DataAnnotations;
-
-namespace Dot.Net.WebApi.Domain
+﻿namespace Dot.Net.WebApi.DTOs
 {
-    public class Rating
+    public class RatingDTO
     {
-        [Key]
         public int Id { get; set; }
         public string? MoodysRating { get; set; }
         public string? SandPRating { get; set; }
         public string? FitchRating { get; set; }
         public byte? OrderNumber { get; set; }
-
     }
 }

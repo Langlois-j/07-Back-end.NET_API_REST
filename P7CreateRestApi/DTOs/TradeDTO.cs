@@ -1,10 +1,7 @@
-using System.ComponentModel.DataAnnotations;
-
-namespace Dot.Net.WebApi.Domain
+﻿namespace Dot.Net.WebApi.DTOs
 {
-    public class Trade
+    public class TradeDTO
     {
-        [Key]
         public int TradeId { get; set; }
         public string? Account { get; set; }
         public string? AccountType { get; set; }
@@ -18,8 +15,6 @@ namespace Dot.Net.WebApi.Domain
         public string? Trader { get; set; }
         public string? Benchmark { get; set; }
         public string? Book { get; set; }
-        public string? CreationName { get; set; }
-        public DateTime? CreationDate { get; set; }
         public string? RevisionName { get; set; }
         public DateTime? RevisionDate { get; set; }
         public string? DealName { get; set; }

@@ -1,5 +1,8 @@
-using Dot.Net.WebApi.Domain;
 using Microsoft.AspNetCore.Mvc;
+using Dot.Net.WebApi.Domain;
+using Dot.Net.WebApi.Repositories;
+using Dot.Net.WebApi.Mappers;
+using Dot.Net.WebApi.DTOs;
 
 namespace Dot.Net.WebApi.Controllers
 {
@@ -7,53 +10,74 @@ namespace Dot.Net.WebApi.Controllers
     [Route("[controller]")]
     public class RatingController : ControllerBase
     {
-        // TODO: Inject Rating service
+        private readonly IRepository<Rating> _repository;
+        private readonly IMapper<Rating, RatingDTO> _mapper;
+
+        public RatingController(IRepository<Rating> RatingRepository, IMapper<Rating, RatingDTO> mapper)
+        {
+            _repository = RatingRepository;
+            _mapper = mapper;
+        }
+
 
         [HttpGet]
         [Route("list")]
-        public IActionResult Home()
+        public async Task<IActionResult> Home()
         {
-            // TODO: find all Rating, add to model
-            return Ok();
-        }
-
-        [HttpGet]
-        [Route("add")]
-        public IActionResult AddRatingForm([FromBody]Rating rating)
-        {
-            return Ok();
+            var List = await _repository.FindAll();
+            return Ok(List.Select(b => _mapper.ToDTO(b)));
+            //// TODO: find all Rating, add to model
+            //return Ok();
         }
 
         [HttpGet]
         [Route("validate")]
-        public IActionResult Validate([FromBody]Rating rating)
+        public async Task<IActionResult> Validate([FromBody] RatingDTO dto)
         {
-            // TODO: check data valid and save to db, after saving return Rating list
-            return Ok();
-        }
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
 
-        [HttpGet]
-        [Route("update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
-        {
-            // TODO: get Rating by Id and to model then show to the form
-            return Ok();
+
+                var mapped = _mapper.ToEntity(dto);
+                var created = await _repository.Add(mapped);
+                return CreatedAtAction(nameof(GetById), new { id = created.Id }, _mapper.ToDTO(created));
+            }
+            //// TODO: check data valid and save to db, after saving return Rating list
+            //return Ok();
         }
 
         [HttpPost]
         [Route("update/{id}")]
-        public IActionResult UpdateRating(int id, [FromBody] Rating rating)
+        public async Task<IActionResult> UpdateRatingt(int id, [FromBody] RatingDTO dto)
         {
-            // TODO: check required fields, if valid call service to update Rating and return Rating list
-            return Ok();
+            var mapped = _mapper.ToEntity(dto);
+            var updated = await _repository.Update(id, mapped);
+            if (updated == null) return NotFound();
+            return Ok(_mapper.ToDTO(updated));
+            // // TODO: check required fields, if valid call service to update Rating and return Rating list
+            //return Ok();
         }
+    
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult DeleteRating(int id)
+        public async Task<IActionResult> DeleteRating(int id)
         {
-            // TODO: Find Rating by Id and delete the Rating, return to Rating list
-            return Ok();
+
+            var result = await _repository.Delete(id);
+            if (!result) return NotFound();
+            return NoContent();
+            //// TODO: Find Rating by Id and delete the Rating, return to Rating list
+            //return Ok();
+        }
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var entity = await _repository.FindById(id);
+            if (entity == null) return NotFound();
+            return Ok(_mapper.ToDTO(entity));
         }
     }
 }

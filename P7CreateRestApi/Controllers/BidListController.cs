@@ -13,9 +13,9 @@ namespace Dot.Net.WebApi.Controllers
         private readonly IRepository<BidList> _repository;
         private readonly IMapper<BidList, BidListDTO> _mapper;
 
-        public BidListController(IRepository<BidList> bidListRepository,IMapper<BidList, BidListDTO> mapper)
+        public BidListController(IRepository<BidList> repository, IMapper<BidList, BidListDTO> mapper)
         {
-            _repository = bidListRepository;
+            _repository = repository;
             _mapper = mapper;
         }
 
@@ -23,8 +23,8 @@ namespace Dot.Net.WebApi.Controllers
         [Route("list")]
         public async Task<IActionResult> Home()
         {
-            var bidLists = await _repository.FindAll();
-            return Ok(bidLists.Select(b => _mapper.ToDTO(b)));
+            var List = await _repository.FindAll();
+            return Ok(List.Select(b => _mapper.ToDTO(b)));
         }
 
       
@@ -32,22 +32,22 @@ namespace Dot.Net.WebApi.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var bidList = await _repository.FindById(id);
-            if (bidList == null) return NotFound();
-            return Ok(_mapper.ToDTO(bidList));
+            var entity = await _repository.FindById(id);
+            if (entity == null) return NotFound();
+            return Ok(_mapper.ToDTO(entity));
         }
 
       
         [HttpPost]
         [Route("validate")]
-        public async Task<IActionResult> Validate([FromBody] BidListDTO bidListDTO)
+        public async Task<IActionResult> Validate([FromBody] BidListDTO dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
 
-            var bidList = _mapper.ToEntity(bidListDTO);
-            var created = await _repository.Add(bidList);
+            var mapped = _mapper.ToEntity(dto);
+            var created = await _repository.Add(mapped);
             return CreatedAtAction(nameof(GetById), new { id = created.BidListId }, _mapper.ToDTO(created));
         }
 

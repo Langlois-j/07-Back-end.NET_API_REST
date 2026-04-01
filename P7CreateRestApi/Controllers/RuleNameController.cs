@@ -1,4 +1,8 @@
 using Dot.Net.WebApi.Domain;
+using Dot.Net.WebApi.DTOs;
+using Dot.Net.WebApi.Mappers;
+using Dot.Net.WebApi.Repositories;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dot.Net.WebApi.Controllers
@@ -7,53 +11,66 @@ namespace Dot.Net.WebApi.Controllers
     [Route("[controller]")]
     public class RuleNameController : ControllerBase
     {
-        // TODO: Inject RuleName service
+        private readonly IRepository<RuleName> _repository;
+        private readonly IMapper<RuleName, RuleNameDTO> _mapper;
+
+        public RuleNameController(IRepository<RuleName> repository, IMapper<RuleName, RuleNameDTO> mapper)
+        {
+            _repository = repository;
+            _mapper = mapper;
+        }
+
 
         [HttpGet]
         [Route("list")]
-        public IActionResult Home()
+        public async Task<IActionResult> Home()
         {
-            // TODO: find all RuleName, add to model
-            return Ok();
-        }
 
-        [HttpGet]
-        [Route("add")]
-        public IActionResult AddRuleName([FromBody]RuleName trade)
-        {
-            return Ok();
-        }
-
-        [HttpGet]
-        [Route("validate")]
-        public IActionResult Validate([FromBody]RuleName trade)
-        {
-            // TODO: check data valid and save to db, after saving return RuleName list
-            return Ok();
-        }
-
-        [HttpGet]
-        [Route("update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
-        {
-            // TODO: get RuleName by Id and to model then show to the form
-            return Ok();
+            var List = await _repository.FindAll();
+            return Ok(List.Select(b => _mapper.ToDTO(b)));
         }
 
         [HttpPost]
-        [Route("update/{id}")]
-        public IActionResult UpdateRuleName(int id, [FromBody] RuleName rating)
+        [Route("validate")]
+        public async Task<IActionResult> Validate([FromBody] RuleNameDTO dto)
         {
-            // TODO: check required fields, if valid call service to update RuleName and return RuleName list
-            return Ok();
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+
+                var mapped = _mapper.ToEntity(dto);
+                var created = await _repository.Add(mapped);
+                return CreatedAtAction(nameof(GetById), new { id = created.Id}, _mapper.ToDTO(created));
+            }
+        }
+
+
+        [HttpPost]
+        [Route("update/{id}")]
+        public async Task<IActionResult> UpdateRuleName(int id, [FromBody] RuleNameDTO dto)
+        {
+            var mapped = _mapper.ToEntity(dto);
+            var updated = await _repository.Update(id, mapped);
+            if (updated == null) return NotFound();
+            return Ok(_mapper.ToDTO(updated));
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult DeleteRuleName(int id)
+        public async Task<IActionResult> DeleteRuleName(int id)
         {
-            // TODO: Find RuleName by Id and delete the RuleName, return to Rule list
-            return Ok();
+            var result = await _repository.Delete(id);
+            if (!result) return NotFound();
+            return NoContent();
+        }
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var entity = await _repository.FindById(id);
+            if (entity == null) return NotFound();
+            return Ok(_mapper.ToDTO(entity));
         }
     }
 }

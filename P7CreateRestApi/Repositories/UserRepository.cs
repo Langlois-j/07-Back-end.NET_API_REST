@@ -4,48 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dot.Net.WebApi.Repositories
 {
-    public class UserRepository : IRepository<User>
+    public class UserRepository : BaseRepository<User>
     {
-        private readonly LocalDbContext _dbContext;
+        public UserRepository(LocalDbContext dbContext) : base(dbContext) { }
 
-        public UserRepository(LocalDbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-        // Lier à l'interface
-        public async Task<List<User>> FindAll()
-        {
-            return await _dbContext.Users.ToListAsync();
-        }
-
-        public async Task<User?> FindById(int id)
-        {
-            return await _dbContext.Users.FindAsync(id);
-        }
-        public async Task<User> Add(User entity)
-        {
-            _dbContext.Users.Add(entity);
-            await _dbContext.SaveChangesAsync();
-            return entity;
-        }
-        public async Task<User?> Update(int id, User entity)
-        {
-            var existing = await FindById(id);
-            if (existing == null) return null;
-
-            _dbContext.Entry(existing).CurrentValues.SetValues(entity);
-            await _dbContext.SaveChangesAsync();
-            return existing;
-        }
-
-        public async Task<bool> Delete(int id)
-        {
-            var existing = await FindById(id);
-            if (existing == null) return false;
-
-            _dbContext.Users.Remove(existing);
-            await _dbContext.SaveChangesAsync();
-            return true;
-        }
+        protected override DbSet<User> DbSet => _dbContext.Users;
     }
 }

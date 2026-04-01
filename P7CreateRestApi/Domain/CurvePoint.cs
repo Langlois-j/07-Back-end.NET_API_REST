@@ -1,16 +1,24 @@
 using System.ComponentModel.DataAnnotations;
+using Dot.Net.WebApi.Validators;
 
 namespace Dot.Net.WebApi.Domain
 {
-    public class CurvePoint : IEntity
+    public class CurvePoint : BaseEntity
     {
-        [Key]
-       public int Id { get; set; }
+  
+        [ValidByte]
         public byte? CurveId { get; set; }
-        public DateTime? AsOfDate { get; set; }
-        public double? Term { get; set; }
-        public double? CurvePointValue { get; set; }
-        public DateTime? CreationDate { get; set; }
 
+        [ValidDate]
+        public DateTime? AsOfDate { get; set; }
+
+        [PositiveDouble]
+        public double? Term { get; set; }
+
+        [PositiveDouble]
+        public double? CurvePointValue { get; set; }
+
+        [ValidDate]
+        public DateTime? CreationDate { get; set; }
     }
 }

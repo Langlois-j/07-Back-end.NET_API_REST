@@ -9,12 +9,15 @@ namespace P7CreateRestApi.Tests.Tests
         [Fact]
         public async Task Add_ShouldAddTrade()
         {
+            // Arrange
             var context = TestDbContextFactory.Create();
             var repository = new TradeRepository(context);
             var trade = new Trade { Account = "TestAccount", AccountType = "Type1" };
 
+            // Act
             var result = await repository.Add(trade);
 
+            // Assert
             Assert.NotNull(result);
             Assert.Equal("TestAccount", result.Account);
         }
@@ -24,8 +27,8 @@ namespace P7CreateRestApi.Tests.Tests
         {
             var context = TestDbContextFactory.Create();
             var repository = new TradeRepository(context);
-            await repository.Add(new Trade { Account = "Account1" });
-            await repository.Add(new Trade { Account = "Account2" });
+            await repository.Add(new Trade { Account = "Account1", AccountType = "Type1" });
+            await repository.Add(new Trade { Account = "Account2", AccountType = "Type1" });
 
             var result = await repository.FindAll();
 
@@ -37,7 +40,7 @@ namespace P7CreateRestApi.Tests.Tests
         {
             var context = TestDbContextFactory.Create();
             var repository = new TradeRepository(context);
-            var added = await repository.Add(new Trade { Account = "Account1" });
+            var added = await repository.Add(new Trade { Account = "Account1", AccountType = "Type1" });
 
             var result = await repository.FindById(added.Id);
 
@@ -61,9 +64,9 @@ namespace P7CreateRestApi.Tests.Tests
         {
             var context = TestDbContextFactory.Create();
             var repository = new TradeRepository(context);
-            var added = await repository.Add(new Trade { Account = "OldAccount" });
+            var added = await repository.Add(new Trade { Account = "OldAccount", AccountType = "Type1" });
 
-            var updated = await repository.Update(added.Id, new Trade { Account = "NewAccount" });
+            var updated = await repository.Update(added.Id, new Trade { Account = "NewAccount", AccountType = "Type1" });
 
             Assert.NotNull(updated);
             Assert.Equal("NewAccount", updated.Account);
@@ -74,7 +77,7 @@ namespace P7CreateRestApi.Tests.Tests
         {
             var context = TestDbContextFactory.Create();
             var repository = new TradeRepository(context);
-            var added = await repository.Add(new Trade { Account = "Account1" });
+            var added = await repository.Add(new Trade { Account = "Account1", AccountType = "Type1" });
 
             var result = await repository.Delete(added.Id);
 

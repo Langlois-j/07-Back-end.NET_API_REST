@@ -1,4 +1,6 @@
 using Dot.Net.WebApi.Domain;
+using Dot.Net.WebApi.DTOs;
+using Dot.Net.WebApi.Mappers;
 using Dot.Net.WebApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,46 +10,43 @@ namespace Dot.Net.WebApi.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly UserRepository _userRepository;
+        private readonly IRepository<User> _repository;
+        private readonly IMapper<User, UserDTO> _mapper;
 
-        public UserController(UserRepository userRepository)
+        public UserController(IRepository<User> repository, IMapper<User, UserDTO> mapper)
         {
-            _userRepository = userRepository;
+            _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [Route("list")]
-        public IActionResult Home()
+        public async Task<IActionResult> Home()
         {
-            return Ok();
+            var List = await _repository.FindAll();
+            return Ok(List.Select(b => _mapper.ToDTO(b)));
         }
 
-        [HttpGet]
-        [Route("add")]
-        public IActionResult AddUser([FromBody]User user)
-        {
-            return Ok();
-        }
+
 
         [HttpGet]
         [Route("validate")]
-        public async Task<IActionResult> Validate([FromBody]User user)
+        public async Task<IActionResult> Validate([FromBody] UserDTO dto)
         {
             if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
+                return BadRequest(ModelState);
 
-            await _userRepository.Add(user);
 
-            return Ok();
+            var mapped = _mapper.ToEntity(dto);
+            var created = await _repository.Add(mapped);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, _mapper.ToDTO(created));
         }
 
         [HttpGet]
         [Route("update/{id}")]
         public async Task<IActionResult> ShowUpdateFormAsync(int id)
         {
-             User? user = await _userRepository.FindById(id);
+             User? user = await _repository.FindById(id);
             
             if (user == null)
                 throw new ArgumentException("Invalid user Id:" + id);
@@ -57,22 +56,24 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpPost]
         [Route("update/{id}")]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] User user)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserDTO dto)
+
         {
-            // TODO: check required fields, if valid call service to update Trade and return Trade list
-            return Ok();
-        }
+                var mapped = _mapper.ToEntity(dto);
+                var updated = await _repository.Update(id, mapped);
+                if (updated == null) return NotFound();
+                return Ok(_mapper.ToDTO(updated));
+            }
+
+        
 
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            User? user = await _userRepository.FindById(id);
-            
-            if (user == null)
-                throw new ArgumentException("Invalid user Id:" + id);
-
-            return Ok();
+            var result = await _repository.Delete(id);
+            if (!result) return NotFound();
+            return NoContent();
         }
 
         [HttpGet]
@@ -80,6 +81,14 @@ namespace Dot.Net.WebApi.Controllers
         public async Task<ActionResult<List<User>>> GetAllUserArticles()
         {
             return Ok();
+        }
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var entity = await _repository.FindById(id);
+            if (entity == null) return NotFound();
+            return Ok(_mapper.ToDTO(entity));
         }
     }
 }

@@ -9,15 +9,15 @@ namespace P7CreateRestApi.Tests.Tests
         [Fact]
         public async Task Add_ShouldAddBidList()
         {
-            // Arrange — préparer
+            // Arrange
             var context = TestDbContextFactory.Create();
             var repository = new BidListRepository(context);
             var bidList = new BidList { Account = "TestAccount", BidType = "Type1" };
 
-            // Act — agir
+            // Act
             var result = await repository.Add(bidList);
 
-            // Assert — vérifier
+            // Assert
             Assert.NotNull(result);
             Assert.Equal("TestAccount", result.Account);
         }
@@ -27,8 +27,8 @@ namespace P7CreateRestApi.Tests.Tests
         {
             var context = TestDbContextFactory.Create();
             var repository = new BidListRepository(context);
-            await repository.Add(new BidList { Account = "Account1" });
-            await repository.Add(new BidList { Account = "Account2" });
+            await repository.Add(new BidList { Account = "Account1", BidType = "Type1" });
+            await repository.Add(new BidList { Account = "Account2", BidType = "Type1" });
 
             var result = await repository.FindAll();
 
@@ -40,7 +40,7 @@ namespace P7CreateRestApi.Tests.Tests
         {
             var context = TestDbContextFactory.Create();
             var repository = new BidListRepository(context);
-            var added = await repository.Add(new BidList { Account = "Account1" });
+            var added = await repository.Add(new BidList { Account = "Account1", BidType = "Type1" });
 
             var result = await repository.FindById(added.Id);
 
@@ -64,9 +64,9 @@ namespace P7CreateRestApi.Tests.Tests
         {
             var context = TestDbContextFactory.Create();
             var repository = new BidListRepository(context);
-            var added = await repository.Add(new BidList { Account = "OldAccount" });
+            var added = await repository.Add(new BidList { Account = "OldAccount", BidType = "Type1" });
 
-            var updated = await repository.Update(added.Id, new BidList { Account = "NewAccount" });
+            var updated = await repository.Update(added.Id, new BidList { Account = "NewAccount", BidType = "Type1" });
 
             Assert.NotNull(updated);
             Assert.Equal("NewAccount", updated.Account);
@@ -77,7 +77,7 @@ namespace P7CreateRestApi.Tests.Tests
         {
             var context = TestDbContextFactory.Create();
             var repository = new BidListRepository(context);
-            var added = await repository.Add(new BidList { Account = "Account1" });
+            var added = await repository.Add(new BidList { Account = "Account1", BidType = "Type1" });
 
             var result = await repository.Delete(added.Id);
 

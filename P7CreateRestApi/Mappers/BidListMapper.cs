@@ -10,7 +10,7 @@ namespace Dot.Net.WebApi.Mappers
         {
             return new BidListDTO
             {
-                BidListId = entity.BidListId,
+                Id = entity.Id,
                 Account = entity.Account,
                 BidType = entity.BidType,
                 BidQuantity = entity.BidQuantity,
@@ -34,7 +34,7 @@ namespace Dot.Net.WebApi.Mappers
         {
             return new BidList
             {
-                BidListId = dto.BidListId,
+                Id = dto.Id,
                 Account = dto.Account ?? string.Empty,
                 BidType = dto.BidType ?? string.Empty,
                 BidQuantity = dto.BidQuantity ,

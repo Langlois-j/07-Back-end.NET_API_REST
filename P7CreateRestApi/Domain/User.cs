@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dot.Net.WebApi.Domain
 {
-    public class User
+    public class User : IEntity
     {
         [Key]
         public int Id { get; set; }

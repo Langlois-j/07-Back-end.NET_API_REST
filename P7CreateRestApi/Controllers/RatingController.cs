@@ -29,7 +29,7 @@ namespace Dot.Net.WebApi.Controllers
        
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("validate")]
         public async Task<IActionResult> Validate([FromBody] RatingDTO dto)
         {

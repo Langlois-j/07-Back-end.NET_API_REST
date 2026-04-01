@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dot.Net.WebApi.Domain
 {
-    public class RuleName
+    public class RuleName : IEntity
     {
         [Key]
         public int Id { get; set; }

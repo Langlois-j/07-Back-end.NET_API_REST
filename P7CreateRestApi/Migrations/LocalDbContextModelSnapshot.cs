@@ -24,11 +24,11 @@ namespace P7CreateRestApi.Migrations
 
             modelBuilder.Entity("Dot.Net.WebApi.Domain.BidList", b =>
                 {
-                    b.Property<int>("BidListId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BidListId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Account")
                         .HasColumnType("nvarchar(max)");
@@ -93,7 +93,7 @@ namespace P7CreateRestApi.Migrations
                     b.Property<string>("Trader")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("BidListId");
+                    b.HasKey("Id");
 
                     b.ToTable("BidLists");
                 });
@@ -184,11 +184,11 @@ namespace P7CreateRestApi.Migrations
 
             modelBuilder.Entity("Dot.Net.WebApi.Domain.Trade", b =>
                 {
-                    b.Property<int>("TradeId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TradeId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Account")
                         .HasColumnType("nvarchar(max)");
@@ -250,7 +250,7 @@ namespace P7CreateRestApi.Migrations
                     b.Property<string>("Trader")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("TradeId");
+                    b.HasKey("Id");
 
                     b.ToTable("Trades");
                 });

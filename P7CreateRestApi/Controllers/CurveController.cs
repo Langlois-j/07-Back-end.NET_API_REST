@@ -40,7 +40,7 @@ namespace Dot.Net.WebApi.Controllers
 
                 var mapped = _mapper.ToEntity(dto);
                 var created = await _repository.Add(mapped);
-                return CreatedAtAction(nameof(GetById), new { id = created.CurveId }, _mapper.ToDTO(created));
+                return CreatedAtAction(nameof(GetById), new { id = created.Id }, _mapper.ToDTO(created));
             }
 
         }

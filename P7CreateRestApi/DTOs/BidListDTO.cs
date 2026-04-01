@@ -2,7 +2,7 @@
 {
     public class BidListDTO
     {
-        public int BidListId { get; set; }
+        public int Id { get; set; }
         public string? Account { get; set; }
         public string? BidType { get; set; }
         public double? BidQuantity { get; set; }

@@ -1,9 +1,10 @@
 using Dot.Net.WebApi.Data;
+using Dot.Net.WebApi.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dot.Net.WebApi.Repositories
 {
-    public abstract class BaseRepository<T> : IRepository<T> where T : class
+    public abstract class BaseRepository<T> : IRepository<T> where T : class, IEntity
     {
         protected readonly LocalDbContext _dbContext;
         protected abstract DbSet<T> DbSet { get; }
@@ -31,6 +32,7 @@ namespace Dot.Net.WebApi.Repositories
             var existing = await FindById(id);
             if (existing == null) return null;
 
+            entity.Id = existing.Id;  
             _dbContext.Entry(existing).CurrentValues.SetValues(entity);
             await _dbContext.SaveChangesAsync();
             return existing;

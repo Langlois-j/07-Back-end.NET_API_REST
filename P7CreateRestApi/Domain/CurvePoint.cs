@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dot.Net.WebApi.Domain
 {
-    public class CurvePoint
+    public class CurvePoint : IEntity
     {
         [Key]
        public int Id { get; set; }

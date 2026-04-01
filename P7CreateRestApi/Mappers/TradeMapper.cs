@@ -10,7 +10,7 @@ namespace Dot.Net.WebApi.Mappers
         {
             return new TradeDTO
             {
-       TradeId =entity.TradeId,
+       Id =entity.Id,
        Account = entity.Account,
        AccountType = entity.AccountType,
        BuyQuantity = entity.BuyQuantity,
@@ -36,7 +36,7 @@ namespace Dot.Net.WebApi.Mappers
         {
             return new Trade
             {
-                TradeId = dto.TradeId,
+                Id = dto.Id,
                 Account = dto.Account ?? string.Empty,
                 AccountType = dto.AccountType ?? string.Empty,
                 BuyQuantity = dto.BuyQuantity,

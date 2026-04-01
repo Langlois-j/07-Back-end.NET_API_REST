@@ -2,10 +2,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dot.Net.WebApi.Domain
 {
-    public class Trade
+    public class Trade : IEntity
     {
         [Key]
-        public int TradeId { get; set; }
+        public int Id { get; set; }
         public string? Account { get; set; }
         public string? AccountType { get; set; }
         public double? BuyQuantity { get; set; }

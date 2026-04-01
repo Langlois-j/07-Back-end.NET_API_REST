@@ -1,8 +1,8 @@
+using Microsoft.AspNetCore.Mvc;
 using Dot.Net.WebApi.Domain;
 using Dot.Net.WebApi.Repositories;
-using Microsoft.AspNetCore.Mvc;
 using Dot.Net.WebApi.Mappers;
-using P7CreateRestApi.DTOs;
+using Dot.Net.WebApi.DTOs;
 
 namespace Dot.Net.WebApi.Controllers
 {
@@ -10,12 +10,12 @@ namespace Dot.Net.WebApi.Controllers
     [Route("[controller]")]
     public class BidListController : ControllerBase
     {
-        private readonly IRepository<BidList> _bidListRepository;
+        private readonly IRepository<BidList> _repository;
         private readonly IMapper<BidList, BidListDTO> _mapper;
 
         public BidListController(IRepository<BidList> bidListRepository,IMapper<BidList, BidListDTO> mapper)
         {
-            _bidListRepository = bidListRepository;
+            _repository = bidListRepository;
             _mapper = mapper;
         }
 
@@ -23,7 +23,7 @@ namespace Dot.Net.WebApi.Controllers
         [Route("list")]
         public async Task<IActionResult> Home()
         {
-            var bidLists = await _bidListRepository.FindAll();
+            var bidLists = await _repository.FindAll();
             return Ok(bidLists.Select(b => _mapper.ToDTO(b)));
         }
 
@@ -32,7 +32,7 @@ namespace Dot.Net.WebApi.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var bidList = await _bidListRepository.FindById(id);
+            var bidList = await _repository.FindById(id);
             if (bidList == null) return NotFound();
             return Ok(_mapper.ToDTO(bidList));
         }
@@ -47,7 +47,7 @@ namespace Dot.Net.WebApi.Controllers
 
 
             var bidList = _mapper.ToEntity(bidListDTO);
-            var created = await _bidListRepository.Add(bidList);
+            var created = await _repository.Add(bidList);
             return CreatedAtAction(nameof(GetById), new { id = created.BidListId }, _mapper.ToDTO(created));
         }
 
@@ -56,7 +56,7 @@ namespace Dot.Net.WebApi.Controllers
         public async Task<IActionResult> UpdateBid(int id, [FromBody] BidListDTO bidListDTO)
         {
             var bidList = _mapper.ToEntity(bidListDTO);
-            var updated = await _bidListRepository.Update(id, bidList);
+            var updated = await _repository.Update(id, bidList);
             if (updated == null) return NotFound();
             return Ok(_mapper.ToDTO(updated));
         }
@@ -66,7 +66,7 @@ namespace Dot.Net.WebApi.Controllers
         [Route("{id}")]
         public async Task<IActionResult> DeleteBid(int id)
         {
-            var result = await _bidListRepository.Delete(id);
+            var result = await _repository.Delete(id);
             if (!result)
                 return NotFound();
 

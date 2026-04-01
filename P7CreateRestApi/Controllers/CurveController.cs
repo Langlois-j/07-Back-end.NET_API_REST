@@ -42,8 +42,7 @@ namespace Dot.Net.WebApi.Controllers
                 var created = await _repository.Add(mapped);
                 return CreatedAtAction(nameof(GetById), new { id = created.CurveId }, _mapper.ToDTO(created));
             }
-            //// TODO: check data valid and save to db, after saving return bid list
-            //return Ok();
+
         }
 
 
@@ -55,8 +54,7 @@ namespace Dot.Net.WebApi.Controllers
             var updated = await _repository.Update(id, mapped);
             if (updated == null) return NotFound();
             return Ok(_mapper.ToDTO(updated));
-            //// TODO: check required fields, if valid call service to update Curve and return Curve list
-            //return Ok();
+
         }
 
         [HttpDelete]
@@ -66,8 +64,7 @@ namespace Dot.Net.WebApi.Controllers
             var result = await _repository.Delete(id);
             if (!result) return NotFound();
             return NoContent();
-            //// TODO: Find Curve by Id and delete the Curve, return to Curve list
-            //return Ok();
+
         }
         [HttpGet]
         [Route("{id}")]

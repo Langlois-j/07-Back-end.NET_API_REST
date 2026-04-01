@@ -1,4 +1,8 @@
 using Dot.Net.WebApi.Domain;
+using Dot.Net.WebApi.DTOs;
+using Dot.Net.WebApi.Mappers;
+using Dot.Net.WebApi.Repositories;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dot.Net.WebApi.Controllers
@@ -7,53 +11,63 @@ namespace Dot.Net.WebApi.Controllers
     [Route("[controller]")]
     public class TradeController : ControllerBase
     {
-        // TODO: Inject Trade service
+        private readonly IRepository<Trade> _repository;
+        private readonly IMapper<Trade, TradeDTO> _mapper;
+
+        public TradeController(IRepository<Trade> repository, IMapper<Trade, TradeDTO> mapper)
+        {
+            _repository = repository;
+            _mapper = mapper;
+        }
 
         [HttpGet]
         [Route("list")]
-        public IActionResult Home()
+        public async Task<IActionResult> Home()
         {
-            // TODO: find all Trade, add to model
-            return Ok();
+            var List = await _repository.FindAll();
+            return Ok(List.Select(b => _mapper.ToDTO(b)));
         }
 
-        [HttpGet]
-        [Route("add")]
-        public IActionResult AddTrade([FromBody]Trade trade)
-        {
-            return Ok();
-        }
 
         [HttpGet]
         [Route("validate")]
-        public IActionResult Validate([FromBody]Trade trade)
+        public async Task<IActionResult> Validate([FromBody] TradeDTO dto)
         {
-            // TODO: check data valid and save to db, after saving return Trade list
-            return Ok();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+
+            var mapped = _mapper.ToEntity(dto);
+            var created = await _repository.Add(mapped);
+            return CreatedAtAction(nameof(GetById), new { id = created.TradeId }, _mapper.ToDTO(created));
+            
         }
 
-        [HttpGet]
+        [HttpPut]
         [Route("update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
+        public async Task<IActionResult> UpdateTrade(int id, [FromBody] TradeDTO dto)
         {
-            // TODO: get Trade by Id and to model then show to the form
-            return Ok();
-        }
-
-        [HttpPost]
-        [Route("update/{id}")]
-        public IActionResult UpdateTrade(int id, [FromBody] Trade trade)
-        {
-            // TODO: check required fields, if valid call service to update Trade and return Trade list
-            return Ok();
+            var mapped = _mapper.ToEntity(dto);
+            var updated = await _repository.Update(id, mapped);
+            if (updated == null) return NotFound();
+            return Ok(_mapper.ToDTO(updated));
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult DeleteTrade(int id)
+        public async Task<IActionResult> DeleteTrade(int id)
         {
-            // TODO: Find Trade by Id and delete the Trade, return to Trade list
-            return Ok();
+            var result = await _repository.Delete(id);
+            if (!result) return NotFound();
+            return NoContent();
+        }
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var entity = await _repository.FindById(id);
+            if (entity == null) return NotFound();
+            return Ok(_mapper.ToDTO(entity));
         }
     }
 }

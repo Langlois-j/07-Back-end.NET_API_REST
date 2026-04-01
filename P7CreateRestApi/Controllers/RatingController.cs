@@ -26,8 +26,7 @@ namespace Dot.Net.WebApi.Controllers
         {
             var List = await _repository.FindAll();
             return Ok(List.Select(b => _mapper.ToDTO(b)));
-            //// TODO: find all Rating, add to model
-            //return Ok();
+       
         }
 
         [HttpGet]
@@ -43,11 +42,10 @@ namespace Dot.Net.WebApi.Controllers
                 var created = await _repository.Add(mapped);
                 return CreatedAtAction(nameof(GetById), new { id = created.Id }, _mapper.ToDTO(created));
             }
-            //// TODO: check data valid and save to db, after saving return Rating list
-            //return Ok();
+
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("update/{id}")]
         public async Task<IActionResult> UpdateRatingt(int id, [FromBody] RatingDTO dto)
         {
@@ -55,8 +53,7 @@ namespace Dot.Net.WebApi.Controllers
             var updated = await _repository.Update(id, mapped);
             if (updated == null) return NotFound();
             return Ok(_mapper.ToDTO(updated));
-            // // TODO: check required fields, if valid call service to update Rating and return Rating list
-            //return Ok();
+
         }
     
 
@@ -68,8 +65,7 @@ namespace Dot.Net.WebApi.Controllers
             var result = await _repository.Delete(id);
             if (!result) return NotFound();
             return NoContent();
-            //// TODO: Find Rating by Id and delete the Rating, return to Rating list
-            //return Ok();
+
         }
         [HttpGet]
         [Route("{id}")]

@@ -46,7 +46,7 @@ namespace Dot.Net.WebApi.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPut]
         [Route("update/{id}")]
         public async Task<IActionResult> UpdateRuleName(int id, [FromBody] RuleNameDTO dto)
         {

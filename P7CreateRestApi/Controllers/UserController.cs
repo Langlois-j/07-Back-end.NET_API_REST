@@ -2,6 +2,7 @@ using Dot.Net.WebApi.Domain;
 using Dot.Net.WebApi.DTOs;
 using Dot.Net.WebApi.Mappers;
 using Dot.Net.WebApi.Repositories;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dot.Net.WebApi.Controllers
@@ -10,10 +11,10 @@ namespace Dot.Net.WebApi.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IRepository<User> _repository;
+        private readonly UserRepository _repository;
         private readonly IMapper<User, UserDTO> _mapper;
 
-        public UserController(IRepository<User> repository, IMapper<User, UserDTO> mapper)
+        public UserController(UserRepository repository, IMapper<User, UserDTO> mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -21,74 +22,75 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpGet]
         [Route("list")]
-        public async Task<IActionResult> Home()
+        public IActionResult GetAll()
         {
-            var List = await _repository.FindAll();
-            return Ok(List.Select(b => _mapper.ToDTO(b)));
+            var users = _repository.FindAll();
+            return Ok(users.Result.Select(u => _mapper.ToDTO(u)));
         }
 
-
-
         [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetById(string id)
+        {
+            var user = await _repository.FindById(id);
+            if (user == null) return NotFound();
+            return Ok(_mapper.ToDTO(user));
+        }
+
+        [HttpPost]
         [Route("validate")]
-        public async Task<IActionResult> Validate([FromBody] UserDTO dto)
+        public async Task<IActionResult> Validate([FromBody] UserCreateDTO dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            var user = new User
+            {
+                UserName = dto.UserName,
+                Fullname = dto.Fullname,
+                Role = dto.Role
+            };
 
-            var mapped = _mapper.ToEntity(dto);
-            var created = await _repository.Add(mapped);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, _mapper.ToDTO(created));
+            var result = await _repository.Add(user, dto.Password);
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
+
+            return CreatedAtAction(nameof(GetById), new { id = user.Id }, _mapper.ToDTO(user));
         }
 
-        [HttpGet]
+        [HttpPut]
         [Route("update/{id}")]
-        public async Task<IActionResult> ShowUpdateFormAsync(int id)
+        public async Task<IActionResult> UpdateUser(string id, [FromBody] UserDTO dto)
         {
-             User? user = await _repository.FindById(id);
-            
-            if (user == null)
-                throw new ArgumentException("Invalid user Id:" + id);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            return Ok();
+            var user = await _repository.FindById(id);
+            if (user == null) return NotFound();
+
+            user.UserName = dto.UserName;
+            user.Fullname = dto.Fullname;
+            user.Role = dto.Role;
+
+            var result = await _repository.Update(user);
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
+
+            return Ok(_mapper.ToDTO(user));
         }
-
-        [HttpPost]
-        [Route("update/{id}")]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserDTO dto)
-
-        {
-                var mapped = _mapper.ToEntity(dto);
-                var updated = await _repository.Update(id, mapped);
-                if (updated == null) return NotFound();
-                return Ok(_mapper.ToDTO(updated));
-            }
-
-        
 
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(string id)
         {
-            var result = await _repository.Delete(id);
-            if (!result) return NotFound();
-            return NoContent();
-        }
+            var user = await _repository.FindById(id);
+            if (user == null) return NotFound();
 
-        [HttpGet]
-        [Route("/secure/article-details")]
-        public async Task<ActionResult<List<User>>> GetAllUserArticles()
-        {
-            return Ok();
-        }
-        [HttpGet]
-        [Route("{id}")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            var entity = await _repository.FindById(id);
-            if (entity == null) return NotFound();
-            return Ok(_mapper.ToDTO(entity));
+            var result = await _repository.Delete(user);
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
+
+            return NoContent();
         }
     }
 }

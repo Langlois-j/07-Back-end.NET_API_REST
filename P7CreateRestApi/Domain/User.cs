@@ -1,18 +1,14 @@
-using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 using Dot.Net.WebApi.Validators;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dot.Net.WebApi.Domain
 {
-    public class User : BaseEntity
+    public class User : IdentityUser
     {
- 
-        [Required(ErrorMessage = "Le nom d'utilisateur est obligatoire.")]
-        public string? Username { get; set; }
-        [Required]
-        [String_PasswordValidation]
-        public string? Password { get; set; }
-       // [Required(ErrorMessage = "Le nom complet est obligatoire.")]
+        [String_NotWhiteSpace("Compte")]
         public string? Fullname { get; set; }
+
         [Required(ErrorMessage = "Le rôle est obligatoire.")]
         public string? Role { get; set; }
     }

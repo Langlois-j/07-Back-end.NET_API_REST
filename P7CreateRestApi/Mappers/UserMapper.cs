@@ -10,7 +10,7 @@ namespace Dot.Net.WebApi.Mappers
             return new UserDTO
             {
                 Id = entity.Id,
-                Username = entity.Username,
+                UserName = entity.UserName,
                 Fullname = entity.Fullname,
                 Role = entity.Role
             };
@@ -21,7 +21,7 @@ namespace Dot.Net.WebApi.Mappers
             return new User
             {
                 Id = dto.Id,
-                Username = dto.Username ?? string.Empty,
+                UserName = dto.UserName ?? string.Empty,
                 Fullname = dto.Fullname ?? string.Empty,
                 Role = dto.Role ?? string.Empty
             };

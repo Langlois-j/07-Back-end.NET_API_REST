@@ -1,13 +1,33 @@
-using Dot.Net.WebApi.Data;
 using Dot.Net.WebApi.Domain;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace Dot.Net.WebApi.Repositories
 {
-    public class UserRepository : BaseRepository<User>
+    public class UserRepository
     {
-        public UserRepository(LocalDbContext dbContext) : base(dbContext) { }
+        private readonly UserManager<User> _userManager;
 
-        protected override DbSet<User> DbSet => _dbContext.Users;
+        public UserRepository(UserManager<User> userManager)
+        {
+            _userManager = userManager;
+        }
+
+        public async Task<List<User>> FindAll() =>
+            _userManager.Users.ToList();
+
+        public async Task<User?> FindById(string id) =>
+            await _userManager.FindByIdAsync(id);
+
+        public async Task<User?> FindByUserName(string userName) =>
+            await _userManager.FindByNameAsync(userName);
+
+        public async Task<IdentityResult> Add(User user, string password) =>
+            await _userManager.CreateAsync(user, password);
+
+        public async Task<IdentityResult> Update(User user) =>
+            await _userManager.UpdateAsync(user);
+
+        public async Task<IdentityResult> Delete(User user) =>
+            await _userManager.DeleteAsync(user);
     }
 }

@@ -12,19 +12,19 @@ namespace Dot.Net.WebApi.Domain
         [Required(ErrorMessage = "Le type de compte est obligatoire.")]
         public string? AccountType { get; set; }
 
-        [PositiveDouble]
+        [Double_Positive]
         public double? BuyQuantity { get; set; }
 
-        [PositiveDouble]
+        [Double_Positive]
         public double? SellQuantity { get; set; }
 
-        [PositiveDouble]
+        [Double_Positive]
         public double? BuyPrice { get; set; }
 
-        [PositiveDouble]
+        [Double_Positive]
         public double? SellPrice { get; set; }
 
-        [ValidDate]
+        [DateTime_FutureAttribute]
         public DateTime? TradeDate { get; set; }
 
         public string? TradeSecurity { get; set; }
@@ -34,12 +34,12 @@ namespace Dot.Net.WebApi.Domain
         public string? Book { get; set; }
         public string? CreationName { get; set; }
 
-        [ValidDate]
+        [DateTime_PastAttribute]
         public DateTime? CreationDate { get; set; }
 
         public string? RevisionName { get; set; }
 
-        [ValidDate]
+        [DateTime_FutureAttribute]
         public DateTime? RevisionDate { get; set; }
 
         public string? DealName { get; set; }

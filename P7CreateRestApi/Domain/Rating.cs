@@ -15,7 +15,7 @@ namespace Dot.Net.WebApi.Domain
         //[Required(ErrorMessage = "Le rating Fitch est obligatoire.")]
         public string? FitchRating { get; set; }
 
-        [ValidByte]
+        [Byte_Valid]
         public byte? OrderNumber { get; set; }
     }
 }

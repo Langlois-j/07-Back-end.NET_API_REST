@@ -6,7 +6,7 @@ namespace Dot.Net.WebApi.Domain
     public abstract class BaseEntity : IEntity
     {
         [Key]
-        [ValidInteger(0)] 
+        [Int_Valid(null,0)] 
         public int Id { get; set; }
     }
 }

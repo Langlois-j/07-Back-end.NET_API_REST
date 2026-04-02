@@ -6,19 +6,19 @@ namespace Dot.Net.WebApi.Domain
     public class CurvePoint : BaseEntity
     {
   
-        [ValidByte]
+        [Byte_Valid]
         public byte? CurveId { get; set; }
 
-        [ValidDate]
+        [DateTime_FutureAttribute]
         public DateTime? AsOfDate { get; set; }
 
-        [PositiveDouble]
+        [Double_Positive]
         public double? Term { get; set; }
 
-        [PositiveDouble]
+        [Double_Positive]
         public double? CurvePointValue { get; set; }
 
-        [ValidDate]
+        [DateTime_Past]
         public DateTime? CreationDate { get; set; }
     }
 }

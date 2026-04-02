@@ -2,7 +2,7 @@
 using Dot.Net.WebApi.Repositories;
 using P7CreateRestApi.Tests.Helpers;
 
-namespace P7CreateRestApi.Tests.Tests
+namespace P7CreateRestApi.Tests.Repositories
 {
     public class UserRepositoryTests
     {

@@ -6,28 +6,28 @@ namespace Dot.Net.WebApi.Domain
     public class BidList : BaseEntity
     {
 
-        [Required(ErrorMessage = "Le compte est obligatoire.")]
+        [String_NotWhiteSpaceAttribute]
         public string? Account { get; set; }
 
-        [Required(ErrorMessage = "Le type est obligatoire.")]
+        [String_NotWhiteSpaceAttribute]
         public string? BidType { get; set; }
 
-        [PositiveDouble]
-        [MinValue(0)]
+        [Double_Positive]
+        [Double_MinValue(null,0)]
         public double? BidQuantity { get; set; }
 
-        [PositiveDouble]
+        [Double_Positive]
         public double? AskQuantity { get; set; }
 
-        [PositiveDouble]
+        [Double_Positive]
         public double? Bid { get; set; }
 
-        [PositiveDouble]
+        [Double_Positive]
         public double? Ask { get; set; }
 
         public string? Benchmark { get; set; }
 
-        [ValidDate]
+        [DateTime_FutureAttribute]
         public DateTime? BidListDate { get; set; }
 
         public string? Commentary { get; set; }
@@ -37,12 +37,12 @@ namespace Dot.Net.WebApi.Domain
         public string? Book { get; set; }
         public string? CreationName { get; set; }
 
-        [ValidDate]
+        [DateTime_Past]
         public DateTime? CreationDate { get; set; }
 
         public string? RevisionName { get; set; }
 
-        [ValidDate]
+        [DateTime_FutureAttribute]
         public DateTime? RevisionDate { get; set; }
 
         public string? DealName { get; set; }

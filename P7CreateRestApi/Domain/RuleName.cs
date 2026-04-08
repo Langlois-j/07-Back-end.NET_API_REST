@@ -1,3 +1,4 @@
+using Dot.Net.WebApi.Validators;
 using System.ComponentModel.DataAnnotations;
 
 namespace Dot.Net.WebApi.Domain
@@ -5,10 +6,10 @@ namespace Dot.Net.WebApi.Domain
     public class RuleName : BaseEntity
     {
 
-        //[Required(ErrorMessage = "Le nom est obligatoire.")]
+       
+        [String_NotWhiteSpace]
         public string? Name { get; set; }
-
-        //[Required(ErrorMessage = "La description est obligatoire.")]
+        [String_NotWhiteSpace]
         public string? Description { get; set; }
 
         public string? Json { get; set; }

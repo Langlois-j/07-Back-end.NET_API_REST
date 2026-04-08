@@ -5,23 +5,23 @@ namespace Dot.Net.WebApi.Domain
 {
     public class Trade : BaseEntity
     {
-      
-        [Required(ErrorMessage = "Le compte est obligatoire.")]
+
+        [String_NotWhiteSpace("Compte")]
         public string? Account { get; set; }
 
-        [Required(ErrorMessage = "Le type de compte est obligatoire.")]
+        [String_NotWhiteSpace("Type de compte")]
         public string? AccountType { get; set; }
 
-        [Double_Positive]
+        [Double_Positive("Quantitée d'achat")]
         public double? BuyQuantity { get; set; }
 
-        [Double_Positive]
+        [Double_Positive("Quantitée de vente")]
         public double? SellQuantity { get; set; }
 
-        [Double_Positive]
+        [Double_Positive("Prix d'achat")]
         public double? BuyPrice { get; set; }
 
-        [Double_Positive]
+        [Double_Positive("Prix de vente")]
         public double? SellPrice { get; set; }
 
         [DateTime_FutureAttribute]

@@ -5,14 +5,13 @@ namespace Dot.Net.WebApi.Domain
 {
     public class Rating : BaseEntity
     {
-       
-        //[Required(ErrorMessage = "Le rating Moody's est obligatoire.")]
+        [String_NotWhiteSpace]
         public string? MoodysRating { get; set; }
 
-        //[Required(ErrorMessage = "Le rating S&P est obligatoire.")]
+        [String_NotWhiteSpace]
         public string? SandPRating { get; set; }
 
-        //[Required(ErrorMessage = "Le rating Fitch est obligatoire.")]
+        [String_NotWhiteSpace]
         public string? FitchRating { get; set; }
 
         [Byte_Valid]

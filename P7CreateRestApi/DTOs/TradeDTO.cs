@@ -1,13 +1,21 @@
-﻿namespace Dot.Net.WebApi.DTOs
+﻿using Dot.Net.WebApi.Validators;
+
+namespace Dot.Net.WebApi.DTOs
 {
     public class TradeDTO
     {
         public int Id { get; set; }
+        [String_NotWhiteSpace]
         public string? Account { get; set; }
+        [String_NotWhiteSpace]
         public string? AccountType { get; set; }
+        [Double_Positive]
         public double? BuyQuantity { get; set; }
+        [Double_Positive]
         public double? SellQuantity { get; set; }
+        [Double_Positive]
         public double? BuyPrice { get; set; }
+        [Double_Positive]
         public double? SellPrice { get; set; }
         public DateTime? TradeDate { get; set; }
         public string? TradeSecurity { get; set; }

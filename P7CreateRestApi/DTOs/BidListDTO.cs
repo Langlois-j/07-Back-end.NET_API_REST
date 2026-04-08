@@ -1,10 +1,17 @@
-﻿namespace Dot.Net.WebApi.DTOs
+﻿using Dot.Net.WebApi.Validators;
+
+namespace Dot.Net.WebApi.DTOs
 {
     public class BidListDTO
     {
+        
         public int Id { get; set; }
+        [String_NotWhiteSpaceAttribute]
         public string? Account { get; set; }
+        [String_NotWhiteSpaceAttribute]
         public string? BidType { get; set; }
+        [Double_Positive]
+        [Double_MinValue(null, 0)]
         public double? BidQuantity { get; set; }
         //public double? AskQuantity { get; set; }
         //public double? Bid { get; set; }

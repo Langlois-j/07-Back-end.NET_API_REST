@@ -1,8 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
 using Dot.Net.WebApi.Domain;
-using Dot.Net.WebApi.Repositories;
-using Dot.Net.WebApi.Mappers;
 using Dot.Net.WebApi.DTOs;
+using Dot.Net.WebApi.Mappers;
+using Dot.Net.WebApi.Repositories;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Dot.Net.WebApi.Controllers
 {
@@ -22,6 +23,7 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpGet]
         [Route("list")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> Home()
         {
             var List = await _repository.FindAll();
@@ -31,6 +33,7 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpPost]
         [Route("validate")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Validate([FromBody] RatingDTO dto)
         {
             {
@@ -47,6 +50,7 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpPut]
         [Route("update/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateRatingt(int id, [FromBody] RatingDTO dto)
         {
             var mapped = _mapper.ToEntity(dto);
@@ -59,6 +63,7 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteRating(int id)
         {
 
@@ -69,6 +74,7 @@ namespace Dot.Net.WebApi.Controllers
         }
         [HttpGet]
         [Route("{id}")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> GetById(int id)
         {
             var entity = await _repository.FindById(id);

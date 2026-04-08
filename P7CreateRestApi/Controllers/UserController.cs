@@ -2,6 +2,7 @@ using Dot.Net.WebApi.Domain;
 using Dot.Net.WebApi.DTOs;
 using Dot.Net.WebApi.Mappers;
 using Dot.Net.WebApi.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +23,7 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpGet]
         [Route("list")]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetAll()
         {
             var users = _repository.FindAll();
@@ -30,6 +32,7 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpGet]
         [Route("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetById(string id)
         {
             var user = await _repository.FindById(id);
@@ -39,6 +42,7 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpPost]
         [Route("validate")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Validate([FromBody] UserCreateDTO dto)
         {
             if (!ModelState.IsValid)
@@ -60,6 +64,7 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpPut]
         [Route("update/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateUser(string id, [FromBody] UserDTO dto)
         {
             if (!ModelState.IsValid)
@@ -81,6 +86,7 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteUser(string id)
         {
             var user = await _repository.FindById(id);

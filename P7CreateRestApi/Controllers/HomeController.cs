@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Dot.Net.WebApi.Controllers
 {
@@ -6,7 +7,9 @@ namespace Dot.Net.WebApi.Controllers
     [Route("[controller]")]
     public class HomeController : ControllerBase
     {
+      
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Get()
         {
             return Ok();
@@ -14,6 +17,7 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpGet]
         [Route("Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Admin()
         {
             return Ok();

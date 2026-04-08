@@ -1,14 +1,17 @@
 ﻿using Dot.Net.WebApi.Domain;
+using Dot.Net.WebApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Dot.Net.WebApi.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
+
 namespace Dot.Net.WebApi.Controllers
 {
+    
     [ApiController]
     [Route("[controller]")]
     public class LoginController : ControllerBase
@@ -21,7 +24,7 @@ namespace Dot.Net.WebApi.Controllers
             _userManager = userManager;
             _configuration = configuration;
         }
-
+        [AllowAnonymous]
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)

@@ -2,6 +2,7 @@ using Dot.Net.WebApi.Domain;
 using Dot.Net.WebApi.DTOs;
 using Dot.Net.WebApi.Mappers;
 using Dot.Net.WebApi.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +24,7 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpGet]
         [Route("list")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> Home()
         {
 
@@ -32,6 +34,7 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpPost]
         [Route("validate")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Validate([FromBody] RuleNameDTO dto)
         {
             {
@@ -48,6 +51,7 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpPut]
         [Route("update/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateRuleName(int id, [FromBody] RuleNameDTO dto)
         {
             var mapped = _mapper.ToEntity(dto);
@@ -56,16 +60,22 @@ namespace Dot.Net.WebApi.Controllers
             return Ok(_mapper.ToDTO(updated));
         }
 
+
+
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteRuleName(int id)
         {
             var result = await _repository.Delete(id);
             if (!result) return NotFound();
             return NoContent();
         }
+
+
         [HttpGet]
         [Route("{id}")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> GetById(int id)
         {
             var entity = await _repository.FindById(id);

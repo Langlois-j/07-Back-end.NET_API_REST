@@ -42,7 +42,8 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpPost]
         [Route("validate")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public async Task<IActionResult> Validate([FromBody] UserCreateDTO dto)
         {
             if (!ModelState.IsValid)

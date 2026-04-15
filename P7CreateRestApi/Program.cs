@@ -15,7 +15,35 @@ ConfigurationManager configuration = builder.Configuration;
 // Controllers + Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    // 1. Déclare le schéma de sécurité JWT
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description = "Entrez votre token JWT. Exemple : eyJhbGci..."
+    });
+
+    // 2. Exige ce schéma sur toutes les routes
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 // DbContext
 builder.Services.AddDbContext<LocalDbContext>(options =>
@@ -53,6 +81,7 @@ builder.Services.AddScoped<IRepository<CurvePoint>, CurvePointRepository>();
 builder.Services.AddScoped<IRepository<Rating>, RatingRepository>();
 builder.Services.AddScoped<IRepository<RuleName>, RuleNameRepository>();
 builder.Services.AddScoped<IRepository<Trade>, TradeRepository>();
+builder.Services.AddScoped<UserRepository>();
 
 // Mappers
 builder.Services.AddScoped<IMapper<BidList, BidListDTO>, BidListMapper>();
@@ -60,6 +89,7 @@ builder.Services.AddScoped<IMapper<CurvePoint, CurveDTO>, CurveMapper>();
 builder.Services.AddScoped<IMapper<Rating, RatingDTO>, RatingMapper>();
 builder.Services.AddScoped<IMapper<RuleName, RuleNameDTO>, RuleNameMapper>();
 builder.Services.AddScoped<IMapper<Trade, TradeDTO>, TradeMapper>();
+builder.Services.AddScoped<IMapper<User, UserDTO>, UserMapper>();
 
 var app = builder.Build();
 

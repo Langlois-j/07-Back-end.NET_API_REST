@@ -75,6 +75,16 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// Autorisation : Admin hérite des droits User
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("User", policy =>
+        policy.RequireRole("User", "Admin"));
+
+    options.AddPolicy("Admin", policy =>
+        policy.RequireRole("Admin"));
+});
+
 // Repositories
 builder.Services.AddScoped<IRepository<BidList>, BidListRepository>();
 builder.Services.AddScoped<IRepository<CurvePoint>, CurvePointRepository>();

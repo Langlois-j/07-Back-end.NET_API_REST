@@ -8,9 +8,7 @@ namespace Dot.Net.WebApi.DTOs
         [Required(ErrorMessage = "Le nom d'utilisateur est obligatoire.")]
         public string? UserName { get; set; }
         public string? Fullname { get; set; }
-        [AllowedValues(UserRoles.User, UserRoles.Admin,
-         ErrorMessage = "Le rôle doit être 'User' ou 'Admin'.")]
+        [AllowedValues(UserRoles.User, UserRoles.Admin, ErrorMessage = "Le rôle doit être 'User' ou 'Admin'.")]
         public string? Role { get; set; }
     }
-}
 }

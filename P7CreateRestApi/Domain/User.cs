@@ -8,8 +8,5 @@ namespace Dot.Net.WebApi.Domain
     {
         [String_NotWhiteSpace("Compte")]
         public string? Fullname { get; set; }
-
-        [Required(ErrorMessage = "Le rôle est obligatoire.")]
-        public string? Role { get; set; }
     }
 }

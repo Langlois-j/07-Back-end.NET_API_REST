@@ -11,7 +11,6 @@ using System.Text;
 
 namespace Dot.Net.WebApi.Controllers
 {
-    
     [ApiController]
     [Route("[controller]")]
     public class LoginController : ControllerBase
@@ -24,6 +23,7 @@ namespace Dot.Net.WebApi.Controllers
             _userManager = userManager;
             _configuration = configuration;
         }
+
         [AllowAnonymous]
         [HttpPost]
         [Route("login")]
@@ -35,23 +35,29 @@ namespace Dot.Net.WebApi.Controllers
             var passwordValid = await _userManager.CheckPasswordAsync(user, model.Password);
             if (!passwordValid) return Unauthorized();
 
-            var token = GenerateJwtToken(user);
+            var token = await GenerateJwtToken(user);
             return Ok(new { token });
         }
 
-        private string GenerateJwtToken(User user)
+        private async Task<string> GenerateJwtToken(User user)
         {
             var secretKey = _configuration["Jwt:SecretKey"]!;
             var issuer = _configuration["Jwt:Issuer"];
             var audience = _configuration["Jwt:Audience"];
 
-            var claims = new[]
+            
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName!),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Role, user.Role ?? "User")
             };
+
+            // Un Claim par rôle — supporte les multi-rôles futurs
+            foreach (var role in roles)
+                claims.Add(new Claim(ClaimTypes.Role, role));
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

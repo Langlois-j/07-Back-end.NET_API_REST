@@ -12,7 +12,7 @@ namespace Dot.Net.WebApi.Mappers
                 Id = entity.Id,
                 UserName = entity.UserName,
                 Fullname = entity.Fullname,
-                Role = entity.Role
+                
             };
         }
 
@@ -23,7 +23,7 @@ namespace Dot.Net.WebApi.Mappers
                 Id = dto.Id,
                 UserName = dto.UserName ?? string.Empty,
                 Fullname = dto.Fullname ?? string.Empty,
-                Role = dto.Role ?? string.Empty
+                
             };
         }
     }

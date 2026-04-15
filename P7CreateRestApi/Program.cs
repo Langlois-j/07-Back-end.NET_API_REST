@@ -1,3 +1,4 @@
+using Dot.Net.WebApi;
 using Dot.Net.WebApi.Data;
 using Dot.Net.WebApi.Domain;
 using Dot.Net.WebApi.DTOs;
@@ -75,14 +76,14 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Autorisation : Admin hérite des droits User
+
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("User", policy =>
-        policy.RequireRole("User", "Admin"));
+    options.AddPolicy(UserRoles.User, policy =>
+        policy.RequireRole(UserRoles.User, UserRoles.Admin));
 
-    options.AddPolicy("Admin", policy =>
-        policy.RequireRole("Admin"));
+    options.AddPolicy(UserRoles.Admin, policy =>
+        policy.RequireRole(UserRoles.Admin));
 });
 
 // Repositories
@@ -103,7 +104,6 @@ builder.Services.AddScoped<IMapper<User, UserDTO>, UserMapper>();
 
 var app = builder.Build();
 
-// Pipeline HTTP
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -112,9 +112,20 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication(); // ← avant UseAuthorization !
+app.UseAuthentication(); 
 app.UseAuthorization();
 
 app.MapControllers();
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    foreach (var role in new[] { Dot.Net.WebApi.UserRoles.User, Dot.Net.WebApi.UserRoles.Admin })
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+            await roleManager.CreateAsync(new IdentityRole(role));
+    }
+}
 
 app.Run();

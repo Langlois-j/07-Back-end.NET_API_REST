@@ -29,5 +29,19 @@ namespace Dot.Net.WebApi.Repositories
 
         public async Task<IdentityResult> Delete(User user) =>
             await _userManager.DeleteAsync(user);
+
+     
+
+        public async Task<IList<string>> GetRolesAsync(User user) =>
+            await _userManager.GetRolesAsync(user);
+
+        public async Task<IdentityResult> AssignRoleAsync(User user, string role)
+        {
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            if (currentRoles.Any())
+                await _userManager.RemoveFromRolesAsync(user, currentRoles);
+
+            return await _userManager.AddToRoleAsync(user, role);
+        }
     }
 }

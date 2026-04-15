@@ -17,7 +17,7 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpGet]
         [Route("Admin")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = UserRoles.Admin)]
         public IActionResult Admin()
         {
             return Ok();

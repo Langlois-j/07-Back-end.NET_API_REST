@@ -13,8 +13,9 @@ namespace Dot.Net.WebApi.DTOs
         public string Password { get; set; } = string.Empty;
 
         public string? Fullname { get; set; }
-
         [Required(ErrorMessage = "Le rôle est obligatoire.")]
+        [AllowedValues(UserRoles.User, UserRoles.Admin,
+            ErrorMessage = "Le rôle doit être 'User' ou 'Admin'.")]
         public string Role { get; set; } = string.Empty;
     }
 }

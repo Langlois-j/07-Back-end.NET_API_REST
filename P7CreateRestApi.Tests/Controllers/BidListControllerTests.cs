@@ -16,7 +16,7 @@ namespace P7CreateRestApi.Tests.Controllers
             return new BidListController(repo, mapper);
         }
 
-        // ── Home (GET /list) ────────────────────────────────────────────────────
+   
 
         [Fact]
         public async Task Home_ShouldReturnOk_WithAllBidLists()
@@ -44,7 +44,7 @@ namespace P7CreateRestApi.Tests.Controllers
             Assert.Empty(list);
         }
 
-        // ── GetById ─────────────────────────────────────────────────────────────
+    
 
         [Fact]
         public async Task GetById_ShouldReturnOk_WhenFound()
@@ -69,7 +69,7 @@ namespace P7CreateRestApi.Tests.Controllers
             Assert.IsType<NotFoundResult>(result);
         }
 
-        // ── Validate (POST) ─────────────────────────────────────────────────────
+     
 
         [Fact]
         public async Task Validate_ShouldReturnCreated_WhenModelIsValid()
@@ -95,7 +95,7 @@ namespace P7CreateRestApi.Tests.Controllers
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
-        // ── UpdateBid (PUT) ─────────────────────────────────────────────────────
+       
 
         [Fact]
         public async Task UpdateBid_ShouldReturnOk_WhenFound()
@@ -120,7 +120,7 @@ namespace P7CreateRestApi.Tests.Controllers
             Assert.IsType<NotFoundResult>(result);
         }
 
-        // ── DeleteBid (DELETE) ──────────────────────────────────────────────────
+      
 
         [Fact]
         public async Task DeleteBid_ShouldReturnNoContent_WhenFound()

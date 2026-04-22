@@ -19,9 +19,10 @@ namespace Dot.Net.WebApi.Controllers
         private readonly UserManager<User> _userManager;
         private readonly ITokenService _tokenService;
 
-        public LoginController(UserManager<User> userManager)
+        public LoginController(UserManager<User> userManager, ITokenService tokenService)
         {
             _userManager = userManager;
+            _tokenService = tokenService;
         }
 
         [AllowAnonymous]

@@ -15,7 +15,7 @@ namespace P7CreateRestApi.Tests.Controllers
             return new TradeController(repo, mapper);
         }
 
-        // ── Home ────────────────────────────────────────────────────────────────
+    
 
         [Fact]
         public async Task Home_ShouldReturnOk_WithAllTrades()
@@ -31,7 +31,7 @@ namespace P7CreateRestApi.Tests.Controllers
             Assert.Equal(2, list.Count());
         }
 
-        // ── GetById ─────────────────────────────────────────────────────────────
+      
 
         [Fact]
         public async Task GetById_ShouldReturnOk_WhenFound()
@@ -56,7 +56,7 @@ namespace P7CreateRestApi.Tests.Controllers
             Assert.IsType<NotFoundResult>(result);
         }
 
-        // ── Validate ────────────────────────────────────────────────────────────
+     
 
         [Fact]
         public async Task Validate_ShouldReturnCreated_WhenModelIsValid()
@@ -82,7 +82,7 @@ namespace P7CreateRestApi.Tests.Controllers
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
-        // ── UpdateTrade ─────────────────────────────────────────────────────────
+       
 
         [Fact]
         public async Task UpdateTrade_ShouldReturnOk_WhenFound()
@@ -107,7 +107,6 @@ namespace P7CreateRestApi.Tests.Controllers
             Assert.IsType<NotFoundResult>(result);
         }
 
-        // ── DeleteTrade ─────────────────────────────────────────────────────────
 
         [Fact]
         public async Task DeleteTrade_ShouldReturnNoContent_WhenFound()

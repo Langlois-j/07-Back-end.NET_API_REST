@@ -15,7 +15,7 @@ namespace P7CreateRestApi.Tests.Controllers
             return new RuleNameController(repo, mapper);
         }
 
-        // ── Home ────────────────────────────────────────────────────────────────
+        
 
         [Fact]
         public async Task Home_ShouldReturnOk_WithAllRuleNames()
@@ -31,7 +31,7 @@ namespace P7CreateRestApi.Tests.Controllers
             Assert.Equal(2, list.Count());
         }
 
-        // ── GetById ─────────────────────────────────────────────────────────────
+        
 
         [Fact]
         public async Task GetById_ShouldReturnOk_WhenFound()
@@ -56,7 +56,7 @@ namespace P7CreateRestApi.Tests.Controllers
             Assert.IsType<NotFoundResult>(result);
         }
 
-        // ── Validate ────────────────────────────────────────────────────────────
+     
 
         [Fact]
         public async Task Validate_ShouldReturnCreated_WhenModelIsValid()
@@ -82,7 +82,7 @@ namespace P7CreateRestApi.Tests.Controllers
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
-        // ── UpdateRuleName ──────────────────────────────────────────────────────
+    
 
         [Fact]
         public async Task UpdateRuleName_ShouldReturnOk_WhenFound()
@@ -107,7 +107,7 @@ namespace P7CreateRestApi.Tests.Controllers
             Assert.IsType<NotFoundResult>(result);
         }
 
-        // ── DeleteRuleName ──────────────────────────────────────────────────────
+     
 
         [Fact]
         public async Task DeleteRuleName_ShouldReturnNoContent_WhenFound()

@@ -17,7 +17,6 @@ namespace P7CreateRestApi.Tests.Mappers
                 Id = "user-guid-123",
                 UserName = "jdupont",
                 Fullname = "Jean Dupont",
-                Role = "Admin"
             };
 
             // Act
@@ -27,7 +26,6 @@ namespace P7CreateRestApi.Tests.Mappers
             Assert.Equal("user-guid-123", dto.Id);
             Assert.Equal("jdupont", dto.UserName);
             Assert.Equal("Jean Dupont", dto.Fullname);
-            Assert.Equal("Admin", dto.Role);
         }
 
         [Fact]
@@ -49,7 +47,7 @@ namespace P7CreateRestApi.Tests.Mappers
             Assert.Equal("user-guid-456", entity.Id);
             Assert.Equal("mmartin", entity.UserName);
             Assert.Equal("Marie Martin", entity.Fullname);
-            Assert.Equal("User", entity.Role);
+           
         }
 
         [Fact]
@@ -69,7 +67,7 @@ namespace P7CreateRestApi.Tests.Mappers
             // Assert
             Assert.Equal(string.Empty, entity.UserName);
             Assert.Equal(string.Empty, entity.Fullname);
-            Assert.Equal(string.Empty, entity.Role);
+           
         }
     }
 }

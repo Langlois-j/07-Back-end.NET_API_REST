@@ -15,8 +15,7 @@ namespace P7CreateRestApi.Tests.Controllers
             return new RatingController(repo, mapper);
         }
 
-        // ── Home ────────────────────────────────────────────────────────────────
-
+      
         [Fact]
         public async Task Home_ShouldReturnOk_WithAllRatings()
         {
@@ -31,7 +30,7 @@ namespace P7CreateRestApi.Tests.Controllers
             Assert.Equal(2, list.Count());
         }
 
-        // ── GetById ─────────────────────────────────────────────────────────────
+       
 
         [Fact]
         public async Task GetById_ShouldReturnOk_WhenFound()
@@ -56,7 +55,7 @@ namespace P7CreateRestApi.Tests.Controllers
             Assert.IsType<NotFoundResult>(result);
         }
 
-        // ── Validate ────────────────────────────────────────────────────────────
+        
 
         [Fact]
         public async Task Validate_ShouldReturnCreated_WhenModelIsValid()
@@ -82,7 +81,7 @@ namespace P7CreateRestApi.Tests.Controllers
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
-        // ── UpdateRatingt ───────────────────────────────────────────────────────
+    
 
         [Fact]
         public async Task UpdateRatingt_ShouldReturnOk_WhenFound()
@@ -108,7 +107,7 @@ namespace P7CreateRestApi.Tests.Controllers
             Assert.IsType<NotFoundResult>(result);
         }
 
-        // ── DeleteRating ─────────────────────────────────────────────────────────
+      
 
         [Fact]
         public async Task DeleteRating_ShouldReturnNoContent_WhenFound()

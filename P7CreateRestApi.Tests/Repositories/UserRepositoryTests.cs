@@ -44,7 +44,7 @@ namespace P7CreateRestApi.Tests.Repositories
         {
             // Arrange
             var (repo, _) = CreateRepository();
-            var user = new User { UserName = "jdupont", Fullname = "Jean Dupont", Role = "User" };
+            var user = new User { UserName = "jdupont", Fullname = "Jean Dupont"};
 
             // Act
             var result = await repo.Add(user, "Password123!");
@@ -58,7 +58,7 @@ namespace P7CreateRestApi.Tests.Repositories
         {
             // Arrange
             var (repo, _) = CreateRepository();
-            var user = new User { UserName = "testuser", Role = "User" };
+            var user = new User { UserName = "testuser" };
 
             // Act
             var result = await repo.Add(user, "123");
@@ -74,8 +74,8 @@ namespace P7CreateRestApi.Tests.Repositories
         {
             // Arrange
             var (repo, _) = CreateRepository();
-            await repo.Add(new User { UserName = "user1", Role = "User" }, "Password123!");
-            await repo.Add(new User { UserName = "user2", Role = "Admin" }, "Password123!");
+            await repo.Add(new User { UserName = "user1"}, "Password123!");
+            await repo.Add(new User { UserName = "user2" }, "Password123!");
 
             // Act
             var result = await repo.FindAll();
@@ -104,7 +104,7 @@ namespace P7CreateRestApi.Tests.Repositories
         {
             // Arrange
             var (repo, manager) = CreateRepository();
-            var user = new User { UserName = "jmartin", Role = "User" };
+            var user = new User { UserName = "jmartin" };
             await repo.Add(user, "Password123!");
             var created = await manager.FindByNameAsync("jmartin");
 
@@ -136,7 +136,7 @@ namespace P7CreateRestApi.Tests.Repositories
         {
             // Arrange
             var (repo, _) = CreateRepository();
-            await repo.Add(new User { UserName = "mleblanc", Role = "User" }, "Password123!");
+            await repo.Add(new User { UserName = "mleblanc"}, "Password123!");
 
             // Act
             var result = await repo.FindByUserName("mleblanc");
@@ -166,7 +166,7 @@ namespace P7CreateRestApi.Tests.Repositories
         {
             // Arrange
             var (repo, manager) = CreateRepository();
-            await repo.Add(new User { UserName = "avant", Role = "User" }, "Password123!");
+            await repo.Add(new User { UserName = "avant"}, "Password123!");
             var user = await manager.FindByNameAsync("avant");
             user!.Fullname = "Nom Modifié";
 
@@ -186,7 +186,7 @@ namespace P7CreateRestApi.Tests.Repositories
         {
             // Arrange
             var (repo, manager) = CreateRepository();
-            await repo.Add(new User { UserName = "asupprimer", Role = "User" }, "Password123!");
+            await repo.Add(new User { UserName = "asupprimer" }, "Password123!");
             var user = await manager.FindByNameAsync("asupprimer");
 
             // Act

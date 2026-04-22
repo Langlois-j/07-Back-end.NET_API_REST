@@ -1,5 +1,6 @@
 ﻿using Dot.Net.WebApi.Domain;
 using Dot.Net.WebApi.Models;
+using Dot.Net.WebApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,12 +17,11 @@ namespace Dot.Net.WebApi.Controllers
     public class LoginController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
-        private readonly IConfiguration _configuration;
+        private readonly ITokenService _tokenService;
 
-        public LoginController(UserManager<User> userManager, IConfiguration configuration)
+        public LoginController(UserManager<User> userManager)
         {
             _userManager = userManager;
-            _configuration = configuration;
         }
 
         [AllowAnonymous]
@@ -35,42 +35,10 @@ namespace Dot.Net.WebApi.Controllers
             var passwordValid = await _userManager.CheckPasswordAsync(user, model.Password);
             if (!passwordValid) return Unauthorized();
 
-            var token = await GenerateJwtToken(user);
+            var token = await _tokenService.GenerateToken(user);
             return Ok(new { token });
         }
 
-        private async Task<string> GenerateJwtToken(User user)
-        {
-            var secretKey = _configuration["Jwt:SecretKey"]!;
-            var issuer = _configuration["Jwt:Issuer"];
-            var audience = _configuration["Jwt:Audience"];
-
-            
-            var roles = await _userManager.GetRolesAsync(user);
-
-            var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName!),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
-            };
-
-            // Un Claim par rôle — supporte les multi-rôles futurs
-            foreach (var role in roles)
-                claims.Add(new Claim(ClaimTypes.Role, role));
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: issuer,
-                audience: audience,
-                claims: claims,
-                expires: DateTime.UtcNow.AddHours(1),
-                signingCredentials: creds
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+        
     }
 }

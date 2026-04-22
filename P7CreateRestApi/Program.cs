@@ -4,6 +4,7 @@ using Dot.Net.WebApi.Domain;
 using Dot.Net.WebApi.DTOs;
 using Dot.Net.WebApi.Mappers;
 using Dot.Net.WebApi.Repositories;
+using Dot.Net.WebApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -101,6 +102,9 @@ builder.Services.AddScoped<IMapper<Rating, RatingDTO>, RatingMapper>();
 builder.Services.AddScoped<IMapper<RuleName, RuleNameDTO>, RuleNameMapper>();
 builder.Services.AddScoped<IMapper<Trade, TradeDTO>, TradeMapper>();
 builder.Services.AddScoped<IMapper<User, UserDTO>, UserMapper>();
+
+//Services
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 var app = builder.Build();
 

@@ -30,14 +30,13 @@ namespace P7CreateRestApi.Tests.Repositories
                 new List<IPasswordValidator<User>> { new PasswordValidator<User>() },
                 new UpperInvariantLookupNormalizer(),
                 new IdentityErrorDescriber(),
-                null,
+                null!,
                 new Logger<UserManager<User>>(new LoggerFactory())
             );
 
             return (new UserRepository(userManager), userManager);
         }
 
-        // ── Add ────────────────────────────────────────────────────────────────
 
         [Fact]
         public async Task Add_ShouldCreateUser_WhenValidCredentials()
@@ -67,7 +66,7 @@ namespace P7CreateRestApi.Tests.Repositories
             Assert.False(result.Succeeded);
         }
 
-        // ── FindAll ────────────────────────────────────────────────────────────
+       
 
         [Fact]
         public async Task FindAll_ShouldReturnAllUsers()
@@ -97,7 +96,7 @@ namespace P7CreateRestApi.Tests.Repositories
             Assert.Empty(result);
         }
 
-        // ── FindById ───────────────────────────────────────────────────────────
+      
 
         [Fact]
         public async Task FindById_ShouldReturnCorrectUser()
@@ -129,7 +128,7 @@ namespace P7CreateRestApi.Tests.Repositories
             Assert.Null(result);
         }
 
-        // ── FindByUserName ─────────────────────────────────────────────────────
+        
 
         [Fact]
         public async Task FindByUserName_ShouldReturnCorrectUser()
@@ -159,7 +158,7 @@ namespace P7CreateRestApi.Tests.Repositories
             Assert.Null(result);
         }
 
-        // ── Update ─────────────────────────────────────────────────────────────
+       
 
         [Fact]
         public async Task Update_ShouldModifyUser()
@@ -179,7 +178,7 @@ namespace P7CreateRestApi.Tests.Repositories
             Assert.Equal("Nom Modifié", updated!.Fullname);
         }
 
-        // ── Delete ─────────────────────────────────────────────────────────────
+ 
 
         [Fact]
         public async Task Delete_ShouldRemoveUser()

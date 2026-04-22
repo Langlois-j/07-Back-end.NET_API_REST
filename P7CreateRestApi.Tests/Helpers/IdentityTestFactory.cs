@@ -21,7 +21,7 @@ namespace P7CreateRestApi.Tests.Helpers
                 new List<IPasswordValidator<User>> { new PasswordValidator<User>() },
                 new UpperInvariantLookupNormalizer(),
                 new IdentityErrorDescriber(),
-               null,
+               null!,
                 new Logger<UserManager<User>>(new LoggerFactory())
             );
 

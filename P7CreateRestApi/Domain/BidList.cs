@@ -5,10 +5,10 @@ namespace Dot.Net.WebApi.Domain
 {
     public class BidList : BaseEntity
     {
-
+       
         [String_NotWhiteSpaceAttribute]
         public string? Account { get; set; }
-
+    
         [String_NotWhiteSpaceAttribute]
         public string? BidType { get; set; }
 

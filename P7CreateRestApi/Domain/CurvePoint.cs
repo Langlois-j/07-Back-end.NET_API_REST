@@ -5,7 +5,7 @@ namespace Dot.Net.WebApi.Domain
 {
     public class CurvePoint : BaseEntity
     {
-  
+      
         [Byte_Valid]
         public byte? CurveId { get; set; }
 

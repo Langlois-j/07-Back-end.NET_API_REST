@@ -5,12 +5,13 @@ namespace Dot.Net.WebApi.Domain
 {
     public class Rating : BaseEntity
     {
+        
         [String_NotWhiteSpace]
         public string? MoodysRating { get; set; }
-
+       
         [String_NotWhiteSpace]
         public string? SandPRating { get; set; }
-
+       
         [String_NotWhiteSpace]
         public string? FitchRating { get; set; }
 

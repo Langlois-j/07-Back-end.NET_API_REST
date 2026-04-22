@@ -31,7 +31,7 @@ namespace P7CreateRestApi.Tests.Services
             // Mock du UserManager
             _mockUserManager = new Mock<UserManager<User>>(
                 Mock.Of<IUserStore<User>>(),
-                null, null, null, null, null, null, null, null
+                null!, null!, null!, null!, null!, null!, null!, null!
             );
 
             _service = new TokenService(_mockUserManager.Object, _config);

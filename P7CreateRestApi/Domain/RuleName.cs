@@ -9,6 +9,7 @@ namespace Dot.Net.WebApi.Domain
        
         [String_NotWhiteSpace]
         public string? Name { get; set; }
+      
         [String_NotWhiteSpace]
         public string? Description { get; set; }
 

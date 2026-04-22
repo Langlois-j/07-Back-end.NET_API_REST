@@ -1,4 +1,5 @@
 ﻿using Dot.Net.WebApi.Validators;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dot.Net.WebApi.DTOs
 {
@@ -6,8 +7,10 @@ namespace Dot.Net.WebApi.DTOs
     {
         
         public int Id { get; set; }
+        [Required]
         [String_NotWhiteSpaceAttribute]
         public string? Account { get; set; }
+        [Required]
         [String_NotWhiteSpaceAttribute]
         public string? BidType { get; set; }
         [Double_Positive]

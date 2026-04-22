@@ -61,9 +61,9 @@ namespace P7CreateRestApi.Tests.Repositories
         {
             var context = TestDbContextFactory.Create();
             var repository = new CurvePointRepository(context);
-            var added = await repository.Add(new CurvePoint { Term = 1.0 });
+            var added = await repository.Add(new CurvePoint { CurveId = 1, Term = 1.0 });
 
-            var updated = await repository.Update(added.Id, new CurvePoint { Term = 2.0 });
+            var updated = await repository.Update(added.Id, new CurvePoint { CurveId = 1, Term = 2.0 });
 
             Assert.NotNull(updated);
             Assert.Equal(2.0, updated.Term);

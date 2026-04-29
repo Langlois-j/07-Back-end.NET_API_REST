@@ -13,11 +13,13 @@ namespace Dot.Net.WebApi.Controllers
     {
         private readonly UserRepository _repository;
         private readonly IMapper<User, UserDTO> _mapper;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(UserRepository repository, IMapper<User, UserDTO> mapper)
+        public UserController(UserRepository repository, IMapper<User, UserDTO> mapper, ILogger<UserController> logger) 
         {
             _repository = repository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -70,15 +72,22 @@ namespace Dot.Net.WebApi.Controllers
 
             var result = await _repository.Add(user, dto.Password);
             if (!result.Succeeded)
+            {
+                _logger.LogWarning("Échec de la création de l'utilisateur '{UserName}'.", user.UserName);
                 return BadRequest(result.Errors);
+            }
 
             var roleResult = await _repository.AssignRoleAsync(user, dto.Role);
             if (!roleResult.Succeeded)
+            {
+                _logger.LogWarning("Échec de l'attribution du rôle '{Role}' à '{UserName}'.", dto.Role, user.UserName);
                 return BadRequest(roleResult.Errors);
+            }
 
             var responseDto = _mapper.ToDTO(user);
             responseDto.Role = dto.Role;
 
+            _logger.LogInformation("Nouvel utilisateur créé : '{UserName}' avec le rôle '{Role}'.", user.UserName, dto.Role); 
             return CreatedAtAction(nameof(GetById), new { id = user.Id }, responseDto);
         }
 
@@ -93,7 +102,7 @@ namespace Dot.Net.WebApi.Controllers
             var user = await _repository.FindById(id);
             if (user == null) return NotFound();
 
-            user.UserName = dto.UserName;
+            user.UserName = dto.UserName ?? user.UserName;
             user.Fullname = dto.Fullname;
 
             var updateResult = await _repository.Update(user);
@@ -105,6 +114,8 @@ namespace Dot.Net.WebApi.Controllers
                 var roleResult = await _repository.AssignRoleAsync(user, dto.Role);
                 if (!roleResult.Succeeded)
                     return BadRequest(roleResult.Errors);
+
+                _logger.LogInformation("Rôle de l'utilisateur '{UserName}' modifié en '{Role}'.", user.UserName, dto.Role);
             }
 
             var responseDto = _mapper.ToDTO(user);
@@ -126,6 +137,7 @@ namespace Dot.Net.WebApi.Controllers
             if (!result.Succeeded)
                 return BadRequest(result.Errors);
 
+            _logger.LogWarning("Utilisateur '{UserName}' (Id: {Id}) supprimé.", user.UserName, id); 
             return NoContent();
         }
     }

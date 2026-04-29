@@ -43,7 +43,7 @@ namespace Dot.Net.WebApi.Controllers
       
         [HttpPost]
         [Route(Routes.Validate)]
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.User)]
         public async Task<IActionResult> Validate([FromBody] BidListDTO dto)
         {
             if (!ModelState.IsValid)
@@ -57,7 +57,7 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpPut]
         [Route(Routes.Update)]
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.User)]
         public async Task<IActionResult> UpdateBid(int id, [FromBody] BidListDTO bidListDTO)
         {
             var bidList = _mapper.ToEntity(bidListDTO);
@@ -69,7 +69,7 @@ namespace Dot.Net.WebApi.Controllers
         
         [HttpDelete]
         [Route("{id}")]
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.User)]
         public async Task<IActionResult> DeleteBid(int id)
         {
             var result = await _repository.Delete(id);

@@ -24,7 +24,8 @@ namespace P7CreateRestApi.Tests.Controllers
 
             var repo = new UserRepository(manager);
             var mapper = new UserMapper();
-            return (new UserController(repo, mapper), repo, manager, roleManager);
+            var logger = new Microsoft.Extensions.Logging.Abstractions.NullLogger<UserController>();
+            return (new UserController(repo, mapper, logger), repo, manager, roleManager);
         }       
 
         [Fact]

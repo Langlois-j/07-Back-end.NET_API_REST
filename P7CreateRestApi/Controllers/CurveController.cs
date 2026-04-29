@@ -34,7 +34,7 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpPost]
         [Route(Routes.Validate)]
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.User)]
         public async Task<IActionResult> Validate([FromBody]CurveDTO dto)
         {
             {
@@ -52,7 +52,7 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpPut]
         [Route(Routes.Update)]
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.User)]
         public async Task<IActionResult> UpdateCurvePoint(int id, [FromBody] CurveDTO dto)
         {
             var mapped = _mapper.ToEntity(dto);
@@ -64,7 +64,7 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.User)]
         public async Task<IActionResult> DeleteBid(int id)
         {
             var result = await _repository.Delete(id);

@@ -46,5 +46,57 @@ namespace P7CreateRestApi.Tests.Validators
             Assert.NotNull(result);
             Assert.Contains(Int_ValidAttribute.ErrorCodeOutOfRange, result!.MemberNames);
         }
+        [Fact]
+        public void ShouldFail_WhenValueIsBelowMin()
+        {
+            var result = Validate(-1, 0, 100);
+            Assert.NotNull(result);
+            Assert.Contains(Int_ValidAttribute.ErrorCodeOutOfRange, result!.MemberNames);
+        }
+
+        [Fact]
+        public void ShouldFail_WhenValueIsAboveMax()
+        {
+            var result = Validate(101, 0, 100);
+            Assert.NotNull(result);
+            Assert.Contains(Int_ValidAttribute.ErrorCodeOutOfRange, result!.MemberNames);
+        }
+
+        [Fact]
+        public void ShouldPass_WhenMinEqualsMax()
+        {
+            var result = Validate(5, 5, 5);
+            Assert.Equal(ValidationResult.Success, result);
+        }
+
+        [Fact]
+        public void ShouldFail_WhenMinEqualsMaxAndValueDiffers()
+        {
+            var result = Validate(6, 5, 5);
+            Assert.NotNull(result);
+            Assert.Contains(Int_ValidAttribute.ErrorCodeOutOfRange, result!.MemberNames);
+        }
+
+        [Fact]
+        public void ShouldFail_WhenValueIsZeroAndMinIsOne()
+        {
+            var result = Validate(0, 1, 100);
+            Assert.NotNull(result);
+            Assert.Contains(Int_ValidAttribute.ErrorCodeOutOfRange, result!.MemberNames);
+        }
+
+        [Fact]
+        public void ShouldPass_WhenValueIsIntMinValue()
+        {
+            var result = Validate(int.MinValue);
+            Assert.Equal(ValidationResult.Success, result);
+        }
+
+        [Fact]
+        public void ShouldPass_WhenValueIsIntMaxValue()
+        {
+            var result = Validate(int.MaxValue);
+            Assert.Equal(ValidationResult.Success, result);
+        }
     }
 }

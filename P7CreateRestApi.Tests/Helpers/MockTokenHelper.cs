@@ -25,7 +25,9 @@ namespace P7CreateRestApi.Tests.Helpers
             );
             mockUserManager
                 .Setup(m => m.GetRolesAsync(It.IsAny<User>()))
-                .ReturnsAsync(new List<string> { role });
+              .ReturnsAsync(role == "Admin"
+        ? new List<string> { "Admin", "User" }
+        : new List<string> { role });
 
             var service = new TokenService(mockUserManager.Object, config);
 

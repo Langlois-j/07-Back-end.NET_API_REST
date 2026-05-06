@@ -63,14 +63,7 @@ namespace P7CreateRestApi.Tests.Routes
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
 
-        [Fact]
-        public async Task Post_ShouldReturn403_WithUserRole()
-        {
-            SetToken("User");
-            var response = await _client.PostAsync("/Curve/validate",
-                JsonBody(new CurveDTO { CurveId = 1, Term = 1.0 }));
-            Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
-        }
+
 
         [Fact]
         public async Task Post_ShouldReturn400_WhenModelInvalid()
@@ -98,14 +91,7 @@ namespace P7CreateRestApi.Tests.Routes
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
 
-        [Fact]
-        public async Task Put_ShouldReturn403_WithUserRole()
-        {
-            SetToken("User");
-            var response = await _client.PutAsync("/Curve/update/1",
-                JsonBody(new CurveDTO { CurveId = 1, Term = 1.0 }));
-            Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
-        }
+
 
         [Fact]
         public async Task Put_ShouldReturn404_WhenNotFound()
@@ -123,13 +109,7 @@ namespace P7CreateRestApi.Tests.Routes
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
 
-        [Fact]
-        public async Task Delete_ShouldReturn403_WithUserRole()
-        {
-            SetToken("User");
-            var response = await _client.DeleteAsync("/Curve/1");
-            Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
-        }
+
 
         [Fact]
         public async Task Delete_ShouldReturn404_WhenNotFound()

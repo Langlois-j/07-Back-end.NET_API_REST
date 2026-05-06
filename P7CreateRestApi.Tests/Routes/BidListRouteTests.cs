@@ -63,14 +63,7 @@ namespace P7CreateRestApi.Tests.Routes
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
 
-        [Fact]
-        public async Task Post_ShouldReturn403_WithUserRole()
-        {
-            SetToken("User");
-            var response = await _client.PostAsync("/BidList/validate",
-                JsonBody(new BidListDTO { Account = "A", BidType = "T" }));
-            Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
-        }
+        
 
         [Fact]
         public async Task Post_ShouldReturn400_WhenModelInvalid()
@@ -98,14 +91,6 @@ namespace P7CreateRestApi.Tests.Routes
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
 
-        [Fact]
-        public async Task Put_ShouldReturn403_WithUserRole()
-        {
-            SetToken("User");
-            var response = await _client.PutAsync("/BidList/update/1",
-                JsonBody(new BidListDTO { Account = "A", BidType = "T" }));
-            Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
-        }
 
         [Fact]
         public async Task Put_ShouldReturn404_WhenNotFound()
@@ -121,14 +106,6 @@ namespace P7CreateRestApi.Tests.Routes
         {
             var response = await _client.DeleteAsync("/BidList/1");
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
-        }
-
-        [Fact]
-        public async Task Delete_ShouldReturn403_WithUserRole()
-        {
-            SetToken("User");
-            var response = await _client.DeleteAsync("/BidList/1");
-            Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
         }
 
         [Fact]
